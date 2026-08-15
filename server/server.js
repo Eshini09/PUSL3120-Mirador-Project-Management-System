@@ -1,5 +1,7 @@
 require("dotenv").config();
 
+const authRoutes = require("./src/routes/authRoutes");
+
 const express = require("express");
 const connectDB = require("./src/config/db");
 
@@ -20,5 +22,9 @@ const startServer = async () => {
         console.log(`Mirador server running on port ${PORT}`);
     });
 };
+
+app.use(express.json());
+
+app.use("/api/auth", authRoutes);
 
 startServer();
