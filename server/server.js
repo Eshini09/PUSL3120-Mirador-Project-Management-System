@@ -1,3 +1,4 @@
+const authenticate = require("./src/middleware/authMiddleware");
 require("dotenv").config();
 
 const authRoutes = require("./src/routes/authRoutes");
@@ -12,6 +13,12 @@ const PORT = process.env.PORT || 5001;
 app.get("/api/health", (req, res) => {
     res.json({
         status: "OK"
+    });
+});
+
+app.get("/api/auth/me", authenticate, (req, res) => {
+    res.json({
+        user: req.user
     });
 });
 
