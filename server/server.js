@@ -1,11 +1,24 @@
+require("dotenv").config();
+
 const express = require("express");
+const connectDB = require("./src/config/db");
+
 const app = express();
-const PORT = 5001;
+
+const PORT = process.env.PORT || 5001;
+
 app.get("/api/health", (req, res) => {
     res.json({
-            status: "OK"
-        });
+        status: "OK"
+    });
 });
-app.listen(PORT, () => {
-    console.log(`Mirador server running on port ${PORT}`);
-});
+
+const startServer = async () => {
+    await connectDB();
+
+    app.listen(PORT, () => {
+        console.log(`Mirador server running on port ${PORT}`);
+    });
+};
+
+startServer();
