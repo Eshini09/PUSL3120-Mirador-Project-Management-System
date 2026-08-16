@@ -1,14 +1,20 @@
+const projectRoutes = require("./src/routes/projectRoutes");
+
 const authenticate = require("./src/middleware/authMiddleware");
 require("dotenv").config();
 
 const authRoutes = require("./src/routes/authRoutes");
 
 const express = require("express");
-const connectDB = require("./src/config/db");
-
 const app = express();
 
+app.use(express.json());
+
+const connectDB = require("./src/config/db");
+
 const PORT = process.env.PORT || 5001;
+
+app.use("/api/projects", projectRoutes);
 
 app.get("/api/health", (req, res) => {
     res.json({
