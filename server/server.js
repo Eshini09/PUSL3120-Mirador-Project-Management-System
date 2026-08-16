@@ -14,7 +14,11 @@ const connectDB = require("./src/config/db");
 
 const PORT = process.env.PORT || 5001;
 
+const taskRoutes = require("./src/routes/taskRoutes");
+
 app.use("/api/projects", projectRoutes);
+app.use("/api/tasks", taskRoutes);
+app.use("/api/auth", authRoutes);
 
 app.get("/api/health", (req, res) => {
     res.json({
@@ -35,9 +39,5 @@ const startServer = async () => {
         console.log(`Mirador server running on port ${PORT}`);
     });
 };
-
-app.use(express.json());
-
-app.use("/api/auth", authRoutes);
 
 startServer();
