@@ -23,6 +23,12 @@ const createTask = async (req, res) => {
             createdBy: req.user.userId
         });
 
+        const io = req.app.get("io");
+
+        io.emit("taskCreated", {
+            taskId: task._id.toString()
+        });
+
         res.status(201).json({
             message: "Task created successfully",
             task
@@ -125,6 +131,12 @@ const updateTask = async (req, res) => {
 
         await task.save();
 
+        const io = req.app.get("io");
+
+        io.emit("taskUpdated", {
+            taskId: task._id.toString()
+        });
+
         res.status(200).json({
             message: "Task updated successfully",
             task
@@ -140,7 +152,15 @@ const updateTask = async (req, res) => {
 
 const deleteTask = async (req, res) => {
     try {
+        const taskId = req.task._id.toString();
+
         await req.task.deleteOne();
+
+        const io = req.app.get("io");
+
+        io.emit("taskDeleted", {
+            taskId
+        });
 
         res.status(200).json({
             message: "Task deleted successfully"
