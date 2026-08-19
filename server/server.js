@@ -1,3 +1,5 @@
+const cors = require("cors");
+
 const projectRoutes = require("./src/routes/projectRoutes");
 
 const authenticate = require("./src/middleware/authMiddleware");
@@ -7,6 +9,12 @@ const authRoutes = require("./src/routes/authRoutes");
 
 const express = require("express");
 const app = express();
+
+app.use(
+    cors({
+        origin: "http://localhost:5173"
+    })
+);
 
 app.use(express.json());
 
