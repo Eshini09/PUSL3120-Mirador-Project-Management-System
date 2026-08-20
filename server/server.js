@@ -73,4 +73,8 @@ io.on("connection", (socket) => {
     });
 });
 
-startServer();
+if (require.main === module) {
+    startServer();
+}
+
+module.exports = { app };
