@@ -35,3 +35,5 @@ jobs:
 
       - name: Run automated tests
         run: npm test
+        env:
+          JWT_SECRET: test-secret-for-ci
