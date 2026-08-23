@@ -165,6 +165,21 @@ The GitHub Actions workflow is in:
 It runs backend lint/tests and frontend lint/build when code is pushed or a pull
 request is opened against `main`.
 
+## Demo Flow For The Video
+
+This is the route I plan to use in the demo video:
+
+1. Register/login and show the dashboard.
+2. Create a team and generate an invite link.
+3. Accept the invite as another user.
+4. Create a project and link the team.
+5. Create tasks and milestones for the project.
+6. Show the task list and Kanban table view.
+7. Update a task status and show the change.
+8. Show the Timeline page with project bars and milestone markers.
+9. Show Reports and Activity.
+10. Show Settings profile avatar/bio.
+11. Briefly show tests/lint/build or GitHub Actions evidence.
 
 ## Notes
 

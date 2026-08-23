@@ -119,6 +119,17 @@ function ProtectedLayout() {
                         </Link>
 
                         <Link
+                            to="/timeline"
+                            className={`nav-item ${
+                                location.pathname === "/timeline"
+                                    ? "active"
+                                    : ""
+                            }`}
+                        >
+                            Timeline
+                        </Link>
+
+                        <Link
                             to="/activity"
                             className={`nav-item ${
                                 location.pathname === "/activity"

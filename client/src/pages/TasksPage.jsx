@@ -83,6 +83,7 @@ function TasksPage() {
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [editingTaskId, setEditingTaskId] = useState(null);
     const [activeFilter, setActiveFilter] = useState("ALL");
+    const [viewMode, setViewMode] = useState("LIST");
     const [projects, setProjects] = useState([]);
     const [comments, setComments] = useState([]);
 
@@ -157,17 +158,19 @@ function TasksPage() {
                 );
             }
 
-            if (!commentsResponse.ok) {
-                throw new Error(
-                    commentsData.message ||
-                        "Failed to load comments"
-                );
-            }
-
             setUser(userData.user);
             setTasks(tasksData.tasks || []);
             setProjects(projectsData.projects || []);
-            setComments(commentsData.comments || []);
+            setComments(
+                commentsResponse.ok ? commentsData.comments || [] : []
+            );
+
+            if (!commentsResponse.ok) {
+                console.warn(
+                    "Comments unavailable:",
+                    commentsData.message || "Failed to load comments"
+                );
+            }
         } catch (requestError) {
             console.error(
                 "Tasks loading error:",
@@ -503,6 +506,23 @@ function TasksPage() {
                 new Date(firstTask.updatedAt || firstTask.createdAt || 0)
             );
         });
+    const kanbanColumns = [
+        {
+            key: "TODO",
+            label: "Active",
+            helper: "Ready to start"
+        },
+        {
+            key: "IN_PROGRESS",
+            label: "Ongoing",
+            helper: "Currently moving"
+        },
+        {
+            key: "COMPLETED",
+            label: "Completed",
+            helper: "Finished work"
+        }
+    ];
 
     if (loading) {
         return (
@@ -552,19 +572,45 @@ function TasksPage() {
                 </div>
             )}
 
-            {canCreateTasks && (
+            {(canCreateTasks || tasks.length > 0) && (
                 <div className="page-toolbar">
-                    <button
-                        type="button"
-                        className="quick-action primary"
-                        onClick={() => {
-                            setForm(emptyForm);
-                            setEditingTaskId(null);
-                            setIsFormOpen(true);
-                        }}
-                    >
-                        New task
-                    </button>
+                    {tasks.length > 0 && (
+                        <div className="view-switcher">
+                            <button
+                                type="button"
+                                className={
+                                    viewMode === "LIST" ? "active" : ""
+                                }
+                                onClick={() => setViewMode("LIST")}
+                            >
+                                List
+                            </button>
+
+                            <button
+                                type="button"
+                                className={
+                                    viewMode === "BOARD" ? "active" : ""
+                                }
+                                onClick={() => setViewMode("BOARD")}
+                            >
+                                Kanban
+                            </button>
+                        </div>
+                    )}
+
+                    {canCreateTasks && (
+                        <button
+                            type="button"
+                            className="quick-action primary"
+                            onClick={() => {
+                                setForm(emptyForm);
+                                setEditingTaskId(null);
+                                setIsFormOpen(true);
+                            }}
+                        >
+                            New task
+                        </button>
+                    )}
                 </div>
             )}
 
@@ -805,6 +851,153 @@ function TasksPage() {
                 </div>
             )}
 
+            {viewMode === "BOARD" && tasks.length > 0 ? (
+                <section className="kanban-board">
+                    {kanbanColumns.map((column) => {
+                        const columnTasks = filteredTasks.filter(
+                            (task) => task.status === column.key
+                        );
+
+                        return (
+                            <article className="kanban-column" key={column.key}>
+                                <div className="kanban-column-header">
+                                    <div>
+                                        <h2>{column.label}</h2>
+                                        <p>{column.helper}</p>
+                                    </div>
+
+                                    <span>{columnTasks.length}</span>
+                                </div>
+
+                                <div className="kanban-card-list kanban-table-list">
+                                    {columnTasks.length === 0 ? (
+                                        <p className="kanban-empty">
+                                            No tasks here.
+                                        </p>
+                                    ) : (
+                                        columnTasks.map((task) => {
+                                            const canManageTask =
+                                                user?.role === "ADMIN" ||
+                                                task.project?.manager?._id ===
+                                                    user?.userId ||
+                                                task.createdBy?._id ===
+                                                    user?.userId;
+                                            const canUpdateTask =
+                                                canManageTask ||
+                                                task.assignedTo?._id ===
+                                                    user?.userId;
+
+                                            return (
+                                                <article
+                                                    className="kanban-card kanban-table-row"
+                                                    key={task._id}
+                                                >
+                                                    <div className="kanban-task-cell">
+                                                        <span
+                                                            className={`priority-badge ${task.priority.toLowerCase()}`}
+                                                        >
+                                                            {task.priority}
+                                                        </span>
+
+                                                        <h3>{task.title}</h3>
+
+                                                        <p>
+                                                            {task.project?.name ||
+                                                                "No project"}
+                                                        </p>
+                                                    </div>
+
+                                                    <div className="kanban-card-meta">
+                                                        <span>
+                                                            {task.assignedTo
+                                                                ?.name ||
+                                                                "Unassigned"}
+                                                        </span>
+
+                                                        {getTaskDueState(
+                                                            task
+                                                        ) && (
+                                                            <span>
+                                                                {getTaskDueState(
+                                                                    task
+                                                                )}
+                                                            </span>
+                                                        )}
+                                                    </div>
+
+                                                    {(canUpdateTask ||
+                                                        canManageTask) && (
+                                                        <div className="kanban-actions">
+                                                            {canUpdateTask &&
+                                                                kanbanColumns
+                                                                    .filter(
+                                                                        (
+                                                                            nextColumn
+                                                                        ) =>
+                                                                            nextColumn.key !==
+                                                                            task.status
+                                                                    )
+                                                                    .map(
+                                                                        (
+                                                                            nextColumn
+                                                                        ) => (
+                                                                            <button
+                                                                                key={
+                                                                                    nextColumn.key
+                                                                                }
+                                                                                type="button"
+                                                                                onClick={() =>
+                                                                                    handleStatusUpdate(
+                                                                                        task._id,
+                                                                                        nextColumn.key
+                                                                                    )
+                                                                                }
+                                                                            >
+                                                                                {
+                                                                                    nextColumn.label
+                                                                                }
+                                                                            </button>
+                                                                        )
+                                                                    )}
+
+                                                            {canManageTask && (
+                                                                <>
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() =>
+                                                                            handleEdit(
+                                                                                task
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        Edit
+                                                                    </button>
+
+                                                                    <button
+                                                                        type="button"
+                                                                        className="danger-button"
+                                                                        onClick={() =>
+                                                                            handleDelete(
+                                                                                task._id
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        Delete
+                                                                    </button>
+                                                                </>
+                                                            )}
+                                                        </div>
+                                                    )}
+                                                </article>
+                                            );
+                                        })
+                                    )}
+                                </div>
+                            </article>
+                        );
+                    })}
+                </section>
+            ) : (
             <section className="simple-task-list">
                 {tasks.length === 0 ? (
                     <div className="dashboard-panel">
@@ -815,7 +1008,9 @@ function TasksPage() {
                         <h2>No tasks found.</h2>
 
                         <p>
-                            No tasks are assigned to your account yet.
+                            {canCreateTasks
+                                ? "No tasks are visible yet. Create the first task for one of your projects."
+                                : "No tasks are assigned to your account yet."}
                         </p>
                     </div>
                 ) : filteredTasks.length === 0 ? (
@@ -930,6 +1125,7 @@ function TasksPage() {
                     })
                 )}
             </section>
+            )}
         </>
     );
 }

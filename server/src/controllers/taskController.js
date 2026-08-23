@@ -178,7 +178,8 @@ const getTasks = async (req, res) => {
             tasks = await Task.find({
                 $or: [
                     { project: { $in: projectIds } },
-                    { assignedTo: req.user.userId }
+                    { assignedTo: req.user.userId },
+                    { createdBy: req.user.userId }
                 ]
             })
                 .populate("project", "name status manager")
@@ -224,6 +225,12 @@ const getTaskById = async (req, res) => {
             taskProject &&
             taskProject.manager.toString() === req.user.userId
         ) {
+            return res.status(200).json({
+                task
+            });
+        }
+
+        if (task.createdBy?._id.toString() === req.user.userId) {
             return res.status(200).json({
                 task
             });

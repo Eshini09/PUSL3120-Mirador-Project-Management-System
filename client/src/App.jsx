@@ -16,6 +16,7 @@ import RegisterPage from "./pages/RegisterPage";
 import ReportsPage from "./pages/ReportsPage";
 import SettingsPage from "./pages/SettingsPage";
 import TasksPage from "./pages/TasksPage";
+import TimelinePage from "./pages/TimelinePage";
 import UsersPage from "./pages/UsersPage";
 import TeamsPage from "./pages/TeamsPage";
 import TeamInvitePage from "./pages/TeamInvitePage";
@@ -232,6 +233,11 @@ function App() {
                         <Route
                             path="/reports"
                             element={<ReportsPage />}
+                        />
+
+                        <Route
+                            path="/timeline"
+                            element={<TimelinePage />}
                         />
 
                         <Route
