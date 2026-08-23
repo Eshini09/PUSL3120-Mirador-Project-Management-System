@@ -39,7 +39,7 @@ npm ci
 ```env
 MONGODB_URI=mongodb://127.0.0.1:27017/mirador
 PORT=5001
-JWT_SECRET=replace-this-with-a-long-secret
+JWT_SECRET=add-a-secret-key-here
 ```
 
 3. Start the backend:
