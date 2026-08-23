@@ -8,9 +8,13 @@ import {
 } from "react-router-dom";
 
 import DashboardPage from "./pages/DashboardPage";
+import ActivityPage from "./pages/ActivityPage";
+import HelpPage from "./pages/HelpPage";
 import MilestonesPage from "./pages/MilestonesPage";
 import ProjectsPage from "./pages/ProjectsPage";
 import RegisterPage from "./pages/RegisterPage";
+import ReportsPage from "./pages/ReportsPage";
+import SettingsPage from "./pages/SettingsPage";
 import TasksPage from "./pages/TasksPage";
 import UsersPage from "./pages/UsersPage";
 import TeamsPage from "./pages/TeamsPage";
@@ -223,6 +227,26 @@ function App() {
                         <Route
                             path="/milestones"
                             element={<MilestonesPage />}
+                        />
+
+                        <Route
+                            path="/reports"
+                            element={<ReportsPage />}
+                        />
+
+                        <Route
+                            path="/activity"
+                            element={<ActivityPage />}
+                        />
+
+                        <Route
+                            path="/settings"
+                            element={<SettingsPage />}
+                        />
+
+                        <Route
+                            path="/help"
+                            element={<HelpPage />}
                         />
 
                         <Route

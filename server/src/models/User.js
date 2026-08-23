@@ -25,6 +25,32 @@ const userSchema = new mongoose.Schema(
             type: String,
             enum: ["ADMIN", "PROJECT_MANAGER", "TEAM_MEMBER"],
             default: "TEAM_MEMBER"
+        },
+
+        bio: {
+            type: String,
+            trim: true,
+            maxlength: 240,
+            default: ""
+        },
+
+        avatarColor: {
+            type: String,
+            enum: [
+                "INDIGO",
+                "TEAL",
+                "CORAL",
+                "AMBER",
+                "GREEN",
+                "LAVENDER",
+                "ROSE",
+                "PEACH",
+                "MINT",
+                "SKY",
+                "LILAC",
+                "LEMON"
+            ],
+            default: "INDIGO"
         }
     },
     {

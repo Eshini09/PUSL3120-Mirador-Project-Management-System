@@ -3,6 +3,7 @@ const express = require("express");
 const {
     getUsers,
     getAssignableUsers,
+    updateMyProfile,
     updateUserRole,
     deleteUser
 } = require("../controllers/userController");
@@ -15,6 +16,12 @@ router.get(
     "/assignable",
     authenticate,
     getAssignableUsers
+);
+
+router.patch(
+    "/me",
+    authenticate,
+    updateMyProfile
 );
 
 router.get(

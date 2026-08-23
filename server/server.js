@@ -66,7 +66,7 @@ app.get("/api/health", (req, res) => {
 app.get("/api/auth/me", authenticate, async (req, res) => {
     try {
         const user = await User.findById(req.user.userId).select(
-            "name email role"
+            "name email role bio avatarColor"
         );
 
         if (!user) {
@@ -81,7 +81,9 @@ app.get("/api/auth/me", authenticate, async (req, res) => {
                 id: user._id.toString(),
                 name: user.name,
                 email: user.email,
-                role: user.role
+                role: user.role,
+                bio: user.bio,
+                avatarColor: user.avatarColor
             }
         });
     } catch (error) {

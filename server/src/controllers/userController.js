@@ -1,9 +1,25 @@
 const User = require("../models/User");
 
+const profileFields = "_id name email role bio avatarColor";
+const allowedAvatarColors = [
+    "INDIGO",
+    "TEAL",
+    "CORAL",
+    "AMBER",
+    "GREEN",
+    "LAVENDER",
+    "ROSE",
+    "PEACH",
+    "MINT",
+    "SKY",
+    "LILAC",
+    "LEMON"
+];
+
 const getUsers = async (req, res) => {
     try {
         const users = await User.find()
-            .select("_id name email role")
+            .select(profileFields)
             .sort({ name: 1 });
 
         res.status(200).json({
@@ -33,7 +49,7 @@ const getAssignableUsers = async (req, res) => {
         }
 
         const users = await User.find(query)
-            .select("_id name email role")
+            .select(profileFields)
             .sort({ name: 1 });
 
         res.status(200).json({
@@ -44,6 +60,70 @@ const getAssignableUsers = async (req, res) => {
 
         res.status(500).json({
             message: "Failed to retrieve assignable users"
+        });
+    }
+};
+
+const updateMyProfile = async (req, res) => {
+    try {
+        const { name, bio, avatarColor } = req.body;
+        const user = await User.findById(req.user.userId);
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found"
+            });
+        }
+
+        if (name !== undefined) {
+            if (!name.trim()) {
+                return res.status(400).json({
+                    message: "Name cannot be empty"
+                });
+            }
+
+            user.name = name.trim();
+        }
+
+        if (bio !== undefined) {
+            if (bio.length > 240) {
+                return res.status(400).json({
+                    message: "Bio must be 240 characters or fewer"
+                });
+            }
+
+            user.bio = bio.trim();
+        }
+
+        if (avatarColor !== undefined) {
+            if (!allowedAvatarColors.includes(avatarColor)) {
+                return res.status(400).json({
+                    message: "A valid avatar colour is required"
+                });
+            }
+
+            user.avatarColor = avatarColor;
+        }
+
+        await user.save();
+
+        res.status(200).json({
+            message: "Profile updated successfully",
+            user: {
+                userId: user._id,
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                bio: user.bio,
+                avatarColor: user.avatarColor
+            }
+        });
+    } catch (error) {
+        console.error("Update profile error:", error);
+
+        res.status(500).json({
+            message: "Failed to update profile"
         });
     }
 };
@@ -92,7 +172,9 @@ const updateUserRole = async (req, res) => {
                 _id: user._id,
                 name: user.name,
                 email: user.email,
-                role: user.role
+                role: user.role,
+                bio: user.bio,
+                avatarColor: user.avatarColor
             }
         });
     } catch (error) {
@@ -149,6 +231,7 @@ const deleteUser = async (req, res) => {
 module.exports = {
     getUsers,
     getAssignableUsers,
+    updateMyProfile,
     updateUserRole,
     deleteUser
 };

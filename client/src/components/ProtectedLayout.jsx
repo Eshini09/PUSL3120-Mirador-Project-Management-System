@@ -2,6 +2,14 @@ import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { apiUrl } from "../api";
 
+const getInitials = (name = "") =>
+    name
+        .split(" ")
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((part) => part[0]?.toUpperCase())
+        .join("") || "M";
+
 function ProtectedLayout() {
     const navigate = useNavigate();
     const location = useLocation();
@@ -99,6 +107,50 @@ function ProtectedLayout() {
                             Milestones
                         </Link>
 
+                        <Link
+                            to="/reports"
+                            className={`nav-item ${
+                                location.pathname === "/reports"
+                                    ? "active"
+                                    : ""
+                            }`}
+                        >
+                            Reports
+                        </Link>
+
+                        <Link
+                            to="/activity"
+                            className={`nav-item ${
+                                location.pathname === "/activity"
+                                    ? "active"
+                                    : ""
+                            }`}
+                        >
+                            Activity
+                        </Link>
+
+                        <Link
+                            to="/settings"
+                            className={`nav-item ${
+                                location.pathname === "/settings"
+                                    ? "active"
+                                    : ""
+                            }`}
+                        >
+                            Settings
+                        </Link>
+
+                        <Link
+                            to="/help"
+                            className={`nav-item ${
+                                location.pathname === "/help"
+                                    ? "active"
+                                    : ""
+                            }`}
+                        >
+                            Help
+                        </Link>
+
                         {user?.role === "ADMIN" && (
                             <Link
                                 to="/users"
@@ -119,7 +171,13 @@ function ProtectedLayout() {
                     className="sidebar-logout"
                     onClick={handleLogout}
                 >
-                    Sign out
+                    <span
+                        className={`profile-avatar sidebar-avatar ${(user?.avatarColor || "INDIGO").toLowerCase()}`}
+                    >
+                        {getInitials(user?.name)}
+                    </span>
+
+                    <span>Sign out</span>
                 </button>
             </aside>
 
