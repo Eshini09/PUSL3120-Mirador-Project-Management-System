@@ -1,6 +1,7 @@
 import ProjectsPage from "./pages/ProjectsPage";
 import TasksPage from "./pages/TasksPage";
 import { useState } from "react";
+import RegisterPage from "./pages/RegisterPage";
 import {
     BrowserRouter,
     Navigate,
@@ -143,6 +144,16 @@ function LoginPage() {
                             {message}
                         </p>
                     )}
+                    <p className="auth-switch">
+                        Don't have an account?{" "}
+                        <button
+                            type="button"
+                            className="auth-link"
+                            onClick={() => navigate("/register")}
+                        >
+                            Create one
+                        </button>
+                    </p>
                 </div>
             </section>
         </main>
@@ -156,6 +167,11 @@ function App() {
                 <Route
                     path="/"
                     element={<LoginPage />}
+                />
+
+                <Route
+                    path="/register"
+                    element={<RegisterPage />}
                 />
 
                 <Route

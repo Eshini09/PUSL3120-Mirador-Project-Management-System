@@ -30,8 +30,19 @@ const register = async (req, res) => {
             user
         });
     } catch (error) {
-        if (error.message === "A user with this email already exists") {
+        if (
+            error.message === "A user with this email already exists"
+        ) {
             return res.status(409).json({
+                message: error.message
+            });
+        }
+
+        if (
+            error.message === "Name, email and password are required" ||
+            error.message === "Password must be at least 8 characters long"
+        ) {
+            return res.status(400).json({
                 message: error.message
             });
         }

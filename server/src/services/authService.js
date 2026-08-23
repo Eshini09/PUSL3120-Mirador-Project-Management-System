@@ -3,7 +3,19 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
 const registerUser = async ({ name, email, password }) => {
-    const existingUser = await User.findOne({ email });
+    if (!name || !email || !password) {
+        throw new Error("Name, email and password are required");
+    }
+
+    const normalizedEmail = email.trim().toLowerCase();
+
+    if (password.length < 8) {
+        throw new Error("Password must be at least 8 characters long");
+    }
+
+    const existingUser = await User.findOne({
+        email: normalizedEmail
+    });
 
     if (existingUser) {
         throw new Error("A user with this email already exists");
@@ -12,8 +24,8 @@ const registerUser = async ({ name, email, password }) => {
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const user = await User.create({
-        name,
-        email,
+        name: name.trim(),
+        email: normalizedEmail,
         password: hashedPassword
     });
 
