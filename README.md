@@ -67,7 +67,7 @@ Example `server/.env`:
 ```env
 MONGODB_URI=mongodb://127.0.0.1:27017/mirador
 PORT=5001
-JWT_SECRET=replace-this-with-a-long-secret
+JWT_SECRET=replace-this-with-a-secret-key
 ```
 
 Frontend, in another terminal:
