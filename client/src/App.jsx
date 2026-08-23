@@ -1,7 +1,4 @@
-import ProjectsPage from "./pages/ProjectsPage";
-import TasksPage from "./pages/TasksPage";
 import { useState } from "react";
-import RegisterPage from "./pages/RegisterPage";
 import {
     BrowserRouter,
     Navigate,
@@ -11,7 +8,18 @@ import {
 } from "react-router-dom";
 
 import DashboardPage from "./pages/DashboardPage";
+import MilestonesPage from "./pages/MilestonesPage";
+import ProjectsPage from "./pages/ProjectsPage";
+import RegisterPage from "./pages/RegisterPage";
+import TasksPage from "./pages/TasksPage";
+import UsersPage from "./pages/UsersPage";
+import TeamsPage from "./pages/TeamsPage";
+import TeamInvitePage from "./pages/TeamInvitePage";
+
+import ProtectedLayout from "./components/ProtectedLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { apiUrl } from "./api";
+
 import "./App.css";
 
 function LoginPage() {
@@ -30,7 +38,7 @@ function LoginPage() {
 
         try {
             const response = await fetch(
-                "http://localhost:5001/api/auth/login",
+                apiUrl("/api/auth/login"),
                 {
                     method: "POST",
                     headers: {
@@ -53,7 +61,15 @@ function LoginPage() {
 
             localStorage.setItem("token", data.token);
 
-            navigate("/dashboard");
+            const pendingRedirect =
+                localStorage.getItem("pendingRedirect");
+
+            if (pendingRedirect) {
+                localStorage.removeItem("pendingRedirect");
+                navigate(pendingRedirect);
+            } else {
+                navigate("/dashboard");
+            }
         } catch (error) {
             console.error("Login error:", error);
             setIsError(true);
@@ -144,6 +160,7 @@ function LoginPage() {
                             {message}
                         </p>
                     )}
+
                     <p className="auth-switch">
                         Don't have an account?{" "}
                         <button
@@ -164,6 +181,7 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
+                {/* Public routes */}
                 <Route
                     path="/"
                     element={<LoginPage />}
@@ -175,32 +193,46 @@ function App() {
                 />
 
                 <Route
-                    path="/dashboard"
-                    element={
-                        <ProtectedRoute>
-                            <DashboardPage />
-                        </ProtectedRoute>
-                    }
+                    path="/team-invites/:token"
+                    element={<TeamInvitePage />}
                 />
 
-                <Route
-                    path="/projects"
-                    element={
-                        <ProtectedRoute>
-                            <ProjectsPage />
-                        </ProtectedRoute>
-                    }
-                />
+                {/* Protected application routes */}
+                <Route element={<ProtectedRoute />}>
+                    <Route element={<ProtectedLayout />}>
+                        <Route
+                            path="/dashboard"
+                            element={<DashboardPage />}
+                        />
 
-                <Route
-                    path="/tasks"
-                    element={
-                        <ProtectedRoute>
-                            <TasksPage />
-                        </ProtectedRoute>
-                    }
-                />
+                        <Route
+                            path="/projects"
+                            element={<ProjectsPage />}
+                        />
 
+                        <Route
+                            path="/tasks"
+                            element={<TasksPage />}
+                        />
+
+                        <Route
+                            path="/teams"
+                            element={<TeamsPage />}
+                        />
+
+                        <Route
+                            path="/milestones"
+                            element={<MilestonesPage />}
+                        />
+
+                        <Route
+                            path="/users"
+                            element={<UsersPage />}
+                        />
+                    </Route>
+                </Route>
+
+                {/* Unknown route */}
                 <Route
                     path="*"
                     element={<Navigate to="/" replace />}

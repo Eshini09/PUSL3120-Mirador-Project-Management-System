@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
-const registerUser = async ({ name, email, password }) => {
+const registerUser = async ({ name, email, password, role }) => {
     if (!name || !email || !password) {
         throw new Error("Name, email and password are required");
     }
@@ -22,11 +22,24 @@ const registerUser = async ({ name, email, password }) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
+    const existingUserCount = await User.countDocuments();
+    const allowedSelfRegistrationRoles = [
+        "PROJECT_MANAGER",
+        "TEAM_MEMBER"
+    ];
+
+    const assignedRole =
+        existingUserCount === 0
+            ? "ADMIN"
+            : allowedSelfRegistrationRoles.includes(role)
+              ? role
+              : "TEAM_MEMBER";
 
     const user = await User.create({
         name: name.trim(),
         email: normalizedEmail,
-        password: hashedPassword
+        password: hashedPassword,
+        role: assignedRole
     });
 
     return {

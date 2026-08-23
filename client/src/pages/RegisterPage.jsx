@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { apiUrl } from "../api";
 
 function RegisterPage() {
     const navigate = useNavigate();
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
+    const [role, setRole] = useState("PROJECT_MANAGER");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [message, setMessage] = useState("");
@@ -27,7 +29,7 @@ function RegisterPage() {
 
         try {
             const response = await fetch(
-                "http://localhost:5001/api/auth/register",
+                apiUrl("/api/auth/register"),
                 {
                     method: "POST",
                     headers: {
@@ -36,6 +38,7 @@ function RegisterPage() {
                     body: JSON.stringify({
                         name,
                         email,
+                        role,
                         password
                     })
                 }
@@ -52,7 +55,14 @@ function RegisterPage() {
             setMessage("Account created successfully. Redirecting...");
 
             setTimeout(() => {
-                navigate("/");
+                const pendingRedirect =
+                    localStorage.getItem("pendingRedirect");
+
+                if (pendingRedirect) {
+                    navigate("/");
+                } else {
+                    navigate("/");
+                }
             }, 1000);
         } catch (error) {
             console.error("Registration error:", error);
@@ -111,6 +121,28 @@ function RegisterPage() {
                                 autoComplete="name"
                                 required
                             />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="register-role">
+                                Account role
+                            </label>
+
+                            <select
+                                id="register-role"
+                                value={role}
+                                onChange={(event) =>
+                                    setRole(event.target.value)
+                                }
+                            >
+                                <option value="PROJECT_MANAGER">
+                                    Project manager
+                                </option>
+
+                                <option value="TEAM_MEMBER">
+                                    Team member
+                                </option>
+                            </select>
                         </div>
 
                         <div className="form-group">

@@ -17,7 +17,6 @@ const router = express.Router();
 router.post(
     "/",
     authenticate,
-    authorize("ADMIN", "PROJECT_MANAGER"),
     createTask
 );
 
@@ -44,7 +43,6 @@ router.put(
 router.delete(
     "/:id",
     authenticate,
-    authorize("ADMIN", "PROJECT_MANAGER", "TEAM_MEMBER"),
     checkTaskAccess,
     deleteTask
 );

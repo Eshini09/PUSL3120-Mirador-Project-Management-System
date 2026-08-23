@@ -16,18 +16,22 @@ const checkTaskAccess = async (req, res, next) => {
             return next();
         }
 
-        // Project managers can manage tasks assigned to their projects.
-        if (req.user.role === "PROJECT_MANAGER") {
-            const Project = require("../models/Project");
-            const project = await Project.findById(task.project);
+        // Project owners can manage tasks assigned to their projects.
+        const Project = require("../models/Project");
+        const project = await Project.findById(task.project);
 
-            if (
-                project &&
-                project.manager.toString() === req.user.userId
-            ) {
-                req.task = task;
-                return next();
-            }
+        if (
+            project &&
+            project.manager.toString() === req.user.userId
+        ) {
+            req.task = task;
+            return next();
+        }
+
+        // Task creators can manage tasks they created.
+        if (task.createdBy.toString() === req.user.userId) {
+            req.task = task;
+            return next();
         }
 
         // Team members can manage tasks assigned to themselves.

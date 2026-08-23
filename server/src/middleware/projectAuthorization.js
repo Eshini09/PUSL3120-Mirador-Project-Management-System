@@ -16,9 +16,8 @@ const checkProjectManager = async (req, res, next) => {
             return next();
         }
 
-        // Project managers can only manage projects assigned to them.
+        // Project owners can manage projects assigned to them.
         if (
-            req.user.role === "PROJECT_MANAGER" &&
             project.manager.toString() === req.user.userId
         ) {
             req.project = project;

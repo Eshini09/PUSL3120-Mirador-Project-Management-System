@@ -1,48 +1,48 @@
 const express = require("express");
 
 const {
-    createProject,
-    getProjects,
-    getProjectById,
-    updateProject,
-    deleteProject
-} = require("../controllers/projectController");
+    createMilestone,
+    getMilestones,
+    getMilestoneById,
+    updateMilestone,
+    deleteMilestone
+} = require("../controllers/milestoneController");
 
 const authenticate = require("../middleware/authMiddleware");
-const checkProjectManager = require("../middleware/projectAuthorization");
+const checkMilestoneAccess = require("../middleware/milestoneAuthorization");
 
 const router = express.Router();
 
 router.post(
     "/",
     authenticate,
-    createProject
+    createMilestone
 );
 
 router.get(
     "/",
     authenticate,
-    getProjects
+    getMilestones
 );
 
 router.get(
     "/:id",
     authenticate,
-    getProjectById
+    getMilestoneById
 );
 
 router.put(
     "/:id",
     authenticate,
-    checkProjectManager,
-    updateProject
+    checkMilestoneAccess,
+    updateMilestone
 );
 
 router.delete(
     "/:id",
     authenticate,
-    checkProjectManager,
-    deleteProject
+    checkMilestoneAccess,
+    deleteMilestone
 );
 
 module.exports = router;
