@@ -78,7 +78,7 @@ npm run lint
 npm run build
 ```
 
-## Demo Flow
+## System Flow
 
 1. Register users for each role.
 2. Log in as an admin or project manager.
@@ -87,4 +87,4 @@ npm run build
 5. Create milestones for the project.
 6. Open a second browser/client session as another user.
 7. Add or update a task comment and show the other client refreshing from the Socket.IO event.
-8. Show the dashboard reflecting projects, tasks, milestones and deadlines.
+8. Show the dashboard reflecting projects, tasks, milestones, and deadlines.
