@@ -47,7 +47,11 @@ function ProtectedLayout() {
             <aside className="dashboard-sidebar">
                 <div>
                     <div className="sidebar-brand">
-                        <span className="sidebar-mark">M</span>
+                        <img
+                            className="sidebar-mark logo-mark"
+                            src="/mirador-logo.png"
+                            alt="Mirador logo"
+                        />
                         <span>Mirador</span>
                     </div>
 

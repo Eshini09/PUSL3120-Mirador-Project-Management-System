@@ -397,6 +397,7 @@ describe("Task CRUD and authorization", () => {
             startDate: futureDate,
             dueDate: laterFutureDate,
             manager: projectManager._id,
+            members: [teamMember._id],
             createdBy: admin._id
         });
 
@@ -552,6 +553,7 @@ describe("Milestone CRUD and authorization", () => {
             startDate: futureDate,
             dueDate: laterFutureDate,
             manager: projectManager._id,
+            members: [teamMember._id],
             createdBy: admin._id
         });
 

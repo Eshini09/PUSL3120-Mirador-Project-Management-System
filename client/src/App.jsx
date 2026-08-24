@@ -86,7 +86,11 @@ function LoginPage() {
         <main className="login-page">
             <section className="brand-panel">
                 <div className="brand-content">
-                    <span className="brand-mark">M</span>
+                    <img
+                        className="brand-mark logo-mark"
+                        src="/mirador-logo.png"
+                        alt="Mirador logo"
+                    />
 
                     <p className="eyebrow">
                         PROJECT MANAGEMENT SYSTEM
@@ -167,13 +171,13 @@ function LoginPage() {
                     )}
 
                     <p className="auth-switch">
-                        Don't have an account?{" "}
+                        New to Mirador?
                         <button
                             type="button"
                             className="auth-link"
                             onClick={() => navigate("/register")}
                         >
-                            Create one
+                            Create account
                         </button>
                     </p>
                 </div>

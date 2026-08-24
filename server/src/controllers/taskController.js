@@ -442,6 +442,19 @@ const updateTask = async (req, res) => {
 const deleteTask = async (req, res) => {
     try {
         const taskId = req.task._id.toString();
+        const project = await Project.findById(req.task.project);
+
+        const canDeleteTask =
+            req.user.role === "ADMIN" ||
+            req.task.createdBy.toString() === req.user.userId ||
+            (project && project.manager.toString() === req.user.userId);
+
+        if (!canDeleteTask) {
+            return res.status(403).json({
+                message:
+                    "Only administrators, project managers or task creators can delete tasks"
+            });
+        }
 
         await req.task.deleteOne();
 

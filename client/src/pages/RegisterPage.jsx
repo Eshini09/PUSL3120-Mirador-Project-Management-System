@@ -77,7 +77,11 @@ function RegisterPage() {
         <main className="login-page">
             <section className="brand-panel">
                 <div className="brand-content">
-                    <span className="brand-mark">M</span>
+                    <img
+                        className="brand-mark logo-mark"
+                        src="/mirador-logo.png"
+                        alt="Mirador logo"
+                    />
 
                     <p className="eyebrow">
                         PROJECT MANAGEMENT SYSTEM
@@ -219,8 +223,8 @@ function RegisterPage() {
                     )}
 
                     <p className="auth-switch">
-                        Already have an account?{" "}
-                        <Link to="/">Sign in</Link>
+                        Already using Mirador?
+                        <Link className="auth-link" to="/">Sign in</Link>
                     </p>
                 </div>
             </section>

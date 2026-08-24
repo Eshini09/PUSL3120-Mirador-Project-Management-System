@@ -1,0 +1,256 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="980" viewBox="0 0 1500 980" role="img" aria-labelledby="title desc">
+  <title id="title">Figure 2: Mirador Entity Relationship / Database Diagram</title>
+  <desc id="desc">Black and white entity relationship diagram for Mirador MongoDB collections: User, Project, Team, TeamInvite, Task, Milestone, TaskComment, and derived Activity Feed.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#111111"/>
+    </marker>
+    <style>
+      text {
+        font-family: Arial, Helvetica, sans-serif;
+        fill: #111111;
+      }
+      .page {
+        fill: #ffffff;
+        stroke: #111111;
+        stroke-width: 1;
+      }
+      .entity {
+        fill: #ffffff;
+        stroke: #111111;
+        stroke-width: 2;
+      }
+      .derived {
+        fill: #ffffff;
+        stroke: #111111;
+        stroke-width: 2;
+        stroke-dasharray: 8 6;
+      }
+      .entityTitle {
+        font-size: 18px;
+        font-weight: 700;
+      }
+      .field {
+        font-size: 13px;
+      }
+      .pk {
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .fk {
+        font-size: 13px;
+        font-style: italic;
+      }
+      .title {
+        font-size: 26px;
+        font-weight: 700;
+      }
+      .caption {
+        font-size: 14px;
+      }
+      .rel {
+        fill: none;
+        stroke: #111111;
+        stroke-width: 1.8;
+      }
+      .relDashed {
+        fill: none;
+        stroke: #111111;
+        stroke-width: 1.8;
+        stroke-dasharray: 7 6;
+      }
+      .cardinality {
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .note {
+        font-size: 12px;
+      }
+    </style>
+  </defs>
+
+  <rect x="1" y="1" width="1498" height="978" class="page"/>
+  <text x="750" y="48" text-anchor="middle" class="title">Figure 2: Entity Relationship / Database Diagram</text>
+
+  <!-- User -->
+  <rect x="80" y="110" width="250" height="230" class="entity"/>
+  <text x="205" y="142" text-anchor="middle" class="entityTitle">User</text>
+  <line x1="100" y1="160" x2="310" y2="160" stroke="#111111" stroke-width="1"/>
+  <text x="105" y="188" class="pk">PK _id</text>
+  <text x="105" y="214" class="field">name</text>
+  <text x="105" y="240" class="field">email</text>
+  <text x="105" y="266" class="field">password</text>
+  <text x="105" y="292" class="field">role</text>
+  <text x="105" y="318" class="field">bio, avatarColor</text>
+
+  <!-- Project -->
+  <rect x="625" y="105" width="260" height="255" class="entity"/>
+  <text x="755" y="137" text-anchor="middle" class="entityTitle">Project</text>
+  <line x1="645" y1="155" x2="865" y2="155" stroke="#111111" stroke-width="1"/>
+  <text x="650" y="183" class="pk">PK _id</text>
+  <text x="650" y="209" class="field">name, description</text>
+  <text x="650" y="235" class="field">status</text>
+  <text x="650" y="261" class="field">startDate, dueDate</text>
+  <text x="650" y="287" class="fk">FK manager -> User</text>
+  <text x="650" y="313" class="fk">FK createdBy -> User</text>
+  <text x="650" y="339" class="fk">FK members[] -> User</text>
+
+  <!-- Team -->
+  <rect x="1170" y="110" width="250" height="230" class="entity"/>
+  <text x="1295" y="142" text-anchor="middle" class="entityTitle">Team</text>
+  <line x1="1190" y1="160" x2="1400" y2="160" stroke="#111111" stroke-width="1"/>
+  <text x="1195" y="188" class="pk">PK _id</text>
+  <text x="1195" y="214" class="field">name</text>
+  <text x="1195" y="240" class="field">description</text>
+  <text x="1195" y="266" class="fk">FK owner -> User</text>
+  <text x="1195" y="292" class="fk">FK members[] -> User</text>
+
+  <!-- Task -->
+  <rect x="250" y="500" width="260" height="255" class="entity"/>
+  <text x="380" y="532" text-anchor="middle" class="entityTitle">Task</text>
+  <line x1="270" y1="550" x2="490" y2="550" stroke="#111111" stroke-width="1"/>
+  <text x="275" y="578" class="pk">PK _id</text>
+  <text x="275" y="604" class="field">title, description</text>
+  <text x="275" y="630" class="field">status</text>
+  <text x="275" y="656" class="field">priority, dueDate</text>
+  <text x="275" y="682" class="fk">FK project -> Project</text>
+  <text x="275" y="708" class="fk">FK assignedTo -> User</text>
+  <text x="275" y="734" class="fk">FK createdBy -> User</text>
+
+  <!-- Milestone -->
+  <rect x="625" y="500" width="260" height="255" class="entity"/>
+  <text x="755" y="532" text-anchor="middle" class="entityTitle">Milestone</text>
+  <line x1="645" y1="550" x2="865" y2="550" stroke="#111111" stroke-width="1"/>
+  <text x="650" y="578" class="pk">PK _id</text>
+  <text x="650" y="604" class="field">title, description</text>
+  <text x="650" y="630" class="field">status</text>
+  <text x="650" y="656" class="field">dueDate</text>
+  <text x="650" y="682" class="fk">FK project -> Project</text>
+  <text x="650" y="708" class="fk">FK owner -> User</text>
+  <text x="650" y="734" class="fk">FK createdBy -> User</text>
+
+  <!-- TeamInvite -->
+  <rect x="1170" y="430" width="250" height="210" class="entity"/>
+  <text x="1295" y="462" text-anchor="middle" class="entityTitle">TeamInvite</text>
+  <line x1="1190" y1="480" x2="1400" y2="480" stroke="#111111" stroke-width="1"/>
+  <text x="1195" y="508" class="pk">PK _id</text>
+  <text x="1195" y="534" class="field">token</text>
+  <text x="1195" y="560" class="field">status</text>
+  <text x="1195" y="586" class="fk">FK team -> Team</text>
+  <text x="1195" y="612" class="fk">FK createdBy -> User</text>
+
+  <!-- TaskComment -->
+  <rect x="250" y="805" width="260" height="125" class="entity"/>
+  <text x="380" y="837" text-anchor="middle" class="entityTitle">TaskComment</text>
+  <line x1="270" y1="855" x2="490" y2="855" stroke="#111111" stroke-width="1"/>
+  <text x="275" y="883" class="pk">PK _id</text>
+  <text x="275" y="907" class="field">body</text>
+  <text x="390" y="883" class="fk">FK task -> Task</text>
+  <text x="390" y="907" class="fk">FK author -> User</text>
+
+  <!-- Activity Feed -->
+  <rect x="1000" y="785" width="330" height="125" class="derived"/>
+  <text x="1165" y="817" text-anchor="middle" class="entityTitle">Activity Feed</text>
+  <line x1="1020" y1="835" x2="1310" y2="835" stroke="#111111" stroke-width="1"/>
+  <text x="1025" y="863" class="field">Derived from project, task, milestone,</text>
+  <text x="1025" y="887" class="field">team, invite and comment events</text>
+  <text x="1025" y="911" class="note">Used by frontend activity/recent updates view</text>
+
+  <!-- Relationships -->
+  <!-- User to Project -->
+  <path d="M330 185 L625 185" class="rel"/>
+  <text x="345" y="176" class="cardinality">1</text>
+  <text x="590" y="176" class="cardinality">0..*</text>
+  <text x="442" y="174" class="note">creates / manages</text>
+
+  <!-- User members to Project -->
+  <path d="M330 310 C455 390, 545 390, 625 320" class="rel"/>
+  <text x="345" y="333" class="cardinality">0..*</text>
+  <text x="590" y="335" class="cardinality">0..*</text>
+  <text x="430" y="405" class="note">project members</text>
+
+  <!-- User to Team -->
+  <path d="M330 245 C610 70, 900 70, 1170 245" class="rel"/>
+  <text x="345" y="238" class="cardinality">1</text>
+  <text x="1132" y="238" class="cardinality">0..*</text>
+  <text x="692" y="92" class="note">owns teams</text>
+
+  <!-- User members to Team -->
+  <path d="M330 292 C610 420, 910 420, 1170 292" class="rel"/>
+  <text x="345" y="308" class="cardinality">0..*</text>
+  <text x="1132" y="308" class="cardinality">0..*</text>
+  <text x="705" y="423" class="note">team members</text>
+
+  <!-- Project to Team many-to-many -->
+  <path d="M885 210 L1170 210" class="rel"/>
+  <text x="900" y="201" class="cardinality">0..*</text>
+  <text x="1132" y="201" class="cardinality">0..*</text>
+  <text x="995" y="199" class="note">linked teams</text>
+
+  <!-- Project to Task -->
+  <path d="M655 360 L450 500" class="rel"/>
+  <text x="632" y="374" class="cardinality">1</text>
+  <text x="465" y="492" class="cardinality">0..*</text>
+  <text x="520" y="432" class="note">contains</text>
+
+  <!-- Project to Milestone -->
+  <path d="M755 360 L755 500" class="rel"/>
+  <text x="768" y="380" class="cardinality">1</text>
+  <text x="768" y="492" class="cardinality">0..*</text>
+  <text x="775" y="434" class="note">contains</text>
+
+  <!-- User to Task -->
+  <path d="M205 340 L315 500" class="rel"/>
+  <text x="218" y="360" class="cardinality">1</text>
+  <text x="287" y="492" class="cardinality">0..*</text>
+  <text x="205" y="430" class="note">assigned / created</text>
+
+  <!-- User to Milestone -->
+  <path d="M315 320 C485 450, 540 430, 650 500" class="rel"/>
+  <text x="330" y="336" class="cardinality">1</text>
+  <text x="618" y="492" class="cardinality">0..*</text>
+  <text x="430" y="470" class="note">owner / createdBy</text>
+
+  <!-- Team to TeamInvite -->
+  <path d="M1295 340 L1295 430" class="rel"/>
+  <text x="1308" y="360" class="cardinality">1</text>
+  <text x="1308" y="422" class="cardinality">0..*</text>
+  <text x="1315" y="390" class="note">has invites</text>
+
+  <!-- User to TeamInvite -->
+  <path d="M330 225 C730 360, 910 505, 1170 535" class="rel"/>
+  <text x="345" y="228" class="cardinality">1</text>
+  <text x="1132" y="527" class="cardinality">0..*</text>
+  <text x="675" y="390" class="note">creates invites</text>
+
+  <!-- TeamInvite accepted/declined arrays to User -->
+  <path d="M1170 610 C825 675, 580 690, 330 285" class="rel"/>
+  <text x="1132" y="626" class="cardinality">0..*</text>
+  <text x="345" y="282" class="cardinality">0..*</text>
+  <text x="720" y="703" class="note">acceptedBy[] / declinedBy[]</text>
+
+  <!-- Task to Comment -->
+  <path d="M380 755 L380 805" class="rel"/>
+  <text x="393" y="775" class="cardinality">1</text>
+  <text x="393" y="798" class="cardinality">0..*</text>
+  <text x="405" y="787" class="note">has comments</text>
+
+  <!-- User to Comment -->
+  <path d="M80 290 C35 620, 90 875, 250 875" class="rel"/>
+  <text x="93" y="315" class="cardinality">1</text>
+  <text x="218" y="866" class="cardinality">0..*</text>
+  <text x="60" y="610" class="note">authors</text>
+
+  <!-- Derived activity -->
+  <path d="M885 640 C940 680, 980 720, 1040 785" class="relDashed"/>
+  <path d="M510 705 C670 820, 820 850, 1000 850" class="relDashed"/>
+  <path d="M1420 560 C1460 690, 1410 805, 1330 850" class="relDashed"/>
+  <text x="860" y="795" class="note">activity is generated from actions and socket events</text>
+
+  <!-- Legend -->
+  <rect x="80" y="790" width="300" height="120" fill="#ffffff" stroke="#111111" stroke-width="1"/>
+  <text x="100" y="820" class="entityTitle">Legend</text>
+  <text x="100" y="848" class="field">PK = Primary Key</text>
+  <text x="100" y="874" class="fk">FK = ObjectId reference</text>
+  <text x="100" y="900" class="field">0..* = zero or many records</text>
+</svg>

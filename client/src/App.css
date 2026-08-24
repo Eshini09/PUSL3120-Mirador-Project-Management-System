@@ -83,6 +83,11 @@ body {
     box-shadow: 0 0 24px rgba(0, 180, 216, 0.18);
 }
 
+.logo-mark {
+    display: block;
+    object-fit: cover;
+}
+
 .eyebrow,
 .form-eyebrow {
     margin: 0 0 12px;
@@ -218,6 +223,36 @@ body {
 
 .login-message.error {
     color: #b91c1c;
+}
+
+.auth-switch {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 24px -18px -18px;
+    padding: 16px 18px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #f8fafc;
+    color: #64748b;
+    font-size: 0.92rem;
+    line-height: 1.4;
+}
+
+.auth-link {
+    border: 0;
+    background: transparent;
+    color: #0f9f9a;
+    font: inherit;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.auth-link:hover {
+    color: #0d7f7b;
+    text-decoration: underline;
 }
 
 @media (max-width: 900px) {

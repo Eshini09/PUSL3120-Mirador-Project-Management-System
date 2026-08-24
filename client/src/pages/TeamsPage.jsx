@@ -89,8 +89,6 @@ function TeamsPage() {
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
-    const [inviteLinks, setInviteLinks] = useState({});
-    const [inviteRecords, setInviteRecords] = useState({});
 
     const token = localStorage.getItem("token");
 
@@ -183,32 +181,6 @@ function TeamsPage() {
             setProjects(projectsData.projects || []);
             setTasks(tasksData.tasks || []);
             setMilestones(milestonesData.milestones || []);
-
-            const manageableTeams = (teamsData.teams || []).filter(
-                (team) =>
-                    meData.user?.role === "ADMIN" ||
-                    team.owner?._id === meData.user?.userId
-            );
-
-            const inviteResponses = await Promise.all(
-                manageableTeams.map((team) =>
-                    fetch(apiUrl(`/api/teams/${team._id}/invites`), {
-                        headers,
-                        cache: "no-store"
-                    })
-                        .then(async (response) => {
-                            const data = await response.json();
-
-                            return [
-                                team._id,
-                                response.ok ? data.invites || [] : []
-                            ];
-                        })
-                        .catch(() => [team._id, []])
-                )
-            );
-
-            setInviteRecords(Object.fromEntries(inviteResponses));
         } catch (requestError) {
             console.error("Teams loading error:", requestError);
             setError(
@@ -364,17 +336,50 @@ function TeamsPage() {
 
             const inviteUrl = `${window.location.origin}/team-invites/${data.invite.token}`;
 
-            setInviteLinks((currentLinks) => ({
-                ...currentLinks,
-                [teamId]: inviteUrl
-            }));
-            setMessage("Invite link created successfully.");
+            const copied = await copyInviteLink(inviteUrl);
+
+            if (!copied) {
+                setError(
+                    "Invite link created, but the browser blocked automatic copying."
+                );
+            }
+
             await loadData();
         } catch (requestError) {
             console.error("Team invite error:", requestError);
             setError(
                 requestError.message || "Unable to create invite link"
             );
+        }
+    };
+
+    const copyInviteLink = async (inviteUrl) => {
+        setError("");
+        setMessage("");
+
+        try {
+            if (navigator.clipboard?.writeText) {
+                await navigator.clipboard.writeText(inviteUrl);
+            } else {
+                const temporaryInput = document.createElement("input");
+                temporaryInput.value = inviteUrl;
+                temporaryInput.setAttribute("readonly", "");
+                temporaryInput.style.position = "absolute";
+                temporaryInput.style.left = "-9999px";
+                document.body.appendChild(temporaryInput);
+                temporaryInput.select();
+                document.execCommand("copy");
+                document.body.removeChild(temporaryInput);
+            }
+
+            setMessage("Invite link copied.");
+            return true;
+        } catch (copyError) {
+            console.error("Invite copy error:", copyError);
+            setError(
+                "Copy failed. Select the invite link and copy it manually."
+            );
+            return false;
         }
     };
 
@@ -666,9 +671,6 @@ function TeamsPage() {
                         const canManageTeam =
                             user?.role === "ADMIN" ||
                             team.owner?._id === user?.userId;
-                        const openInvites = (
-                            inviteRecords[team._id] || []
-                        ).filter((invite) => invite.status === "OPEN");
                         const teamWork = getTeamProjectWork(
                             team,
                             projects,
@@ -862,37 +864,6 @@ function TeamsPage() {
                                                 }
                                             )}
                                         </div>
-
-                                        {(inviteLinks[team._id] ||
-                                            openInvites.length > 0) && (
-                                            <div className="invite-link-box">
-                                                <input
-                                                    value={
-                                                        inviteLinks[
-                                                            team._id
-                                                        ] ||
-                                                        `${window.location.origin}/team-invites/${openInvites[0]?.token}`
-                                                    }
-                                                    readOnly
-                                                />
-                                                <button
-                                                    type="button"
-                                                    onClick={() => {
-                                                        navigator.clipboard?.writeText(
-                                                            inviteLinks[
-                                                                team._id
-                                                            ] ||
-                                                                `${window.location.origin}/team-invites/${openInvites[0]?.token}`
-                                                        );
-                                                        setMessage(
-                                                            "Invite link copied."
-                                                        );
-                                                    }}
-                                                >
-                                                    Copy
-                                                </button>
-                                            </div>
-                                        )}
                                     </div>
                                 )}
                             </article>

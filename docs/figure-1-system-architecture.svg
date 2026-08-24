@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">Figure 1: Mirador System Architecture Diagram</title>
+  <desc id="desc">Black and white line diagram showing React frontend, Express Node backend, MongoDB database, JWT authentication, REST API requests, and Socket.IO real-time communication.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#111111"/>
+    </marker>
+    <marker id="arrowOpen" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10" fill="none" stroke="#111111" stroke-width="1.8"/>
+    </marker>
+    <style>
+      text {
+        font-family: Arial, Helvetica, sans-serif;
+        fill: #111111;
+      }
+      .box {
+        fill: #ffffff;
+        stroke: #111111;
+        stroke-width: 2;
+      }
+      .inner {
+        fill: #ffffff;
+        stroke: #555555;
+        stroke-width: 1.4;
+      }
+      .title {
+        font-size: 24px;
+        font-weight: 700;
+      }
+      .label {
+        font-size: 17px;
+        font-weight: 700;
+      }
+      .small {
+        font-size: 14px;
+      }
+      .caption {
+        font-size: 15px;
+      }
+      .line {
+        fill: none;
+        stroke: #111111;
+        stroke-width: 2;
+        marker-end: url(#arrow);
+      }
+      .dash {
+        fill: none;
+        stroke: #111111;
+        stroke-width: 2;
+        stroke-dasharray: 8 7;
+        marker-end: url(#arrowOpen);
+      }
+    </style>
+  </defs>
+
+  <rect x="1" y="1" width="1198" height="678" fill="#ffffff" stroke="#111111" stroke-width="1"/>
+
+  <text x="600" y="54" text-anchor="middle" class="title">Figure 1: Mirador System Architecture</text>
+
+  <rect x="70" y="125" width="280" height="290" class="box"/>
+  <text x="210" y="165" text-anchor="middle" class="label">React Frontend</text>
+  <line x1="100" y1="188" x2="320" y2="188" stroke="#111111" stroke-width="1"/>
+  <text x="105" y="226" class="small">- Vite client application</text>
+  <text x="105" y="258" class="small">- Pages and components</text>
+  <text x="105" y="290" class="small">- Forms and dashboard</text>
+  <text x="105" y="322" class="small">- Kanban and timeline views</text>
+  <text x="105" y="354" class="small">- Sends JWT with requests</text>
+
+  <rect x="460" y="125" width="280" height="290" class="box"/>
+  <text x="600" y="165" text-anchor="middle" class="label">Express / Node Backend</text>
+  <line x1="490" y1="188" x2="710" y2="188" stroke="#111111" stroke-width="1"/>
+  <text x="495" y="226" class="small">- REST API routes</text>
+  <text x="495" y="258" class="small">- Controllers and validation</text>
+  <text x="495" y="290" class="small">- Role and membership checks</text>
+  <text x="495" y="322" class="small">- JWT authentication</text>
+  <text x="495" y="354" class="small">- Socket.IO server events</text>
+
+  <rect x="850" y="125" width="280" height="290" class="box"/>
+  <text x="990" y="165" text-anchor="middle" class="label">MongoDB Database</text>
+  <line x1="880" y1="188" x2="1100" y2="188" stroke="#111111" stroke-width="1"/>
+  <text x="885" y="226" class="small">- Users and roles</text>
+  <text x="885" y="258" class="small">- Projects and teams</text>
+  <text x="885" y="290" class="small">- Tasks and milestones</text>
+  <text x="885" y="322" class="small">- Invitations and comments</text>
+  <text x="885" y="354" class="small">- Activity records</text>
+
+  <path d="M350 220 L460 220" class="line"/>
+  <path d="M460 285 L350 285" class="line"/>
+  <rect x="372" y="193" width="66" height="35" class="inner"/>
+  <text x="405" y="216" text-anchor="middle" class="small">REST</text>
+  <rect x="370" y="295" width="70" height="35" class="inner"/>
+  <text x="405" y="318" text-anchor="middle" class="small">JSON</text>
+
+  <path d="M740 220 L850 220" class="line"/>
+  <path d="M850 285 L740 285" class="line"/>
+  <rect x="760" y="193" width="70" height="35" class="inner"/>
+  <text x="795" y="216" text-anchor="middle" class="small">Mongoose</text>
+  <rect x="770" y="295" width="50" height="35" class="inner"/>
+  <text x="795" y="318" text-anchor="middle" class="small">CRUD</text>
+
+  <rect x="460" y="470" width="280" height="85" class="box"/>
+  <text x="600" y="502" text-anchor="middle" class="label">JWT Authentication</text>
+  <text x="600" y="532" text-anchor="middle" class="small">Login creates token; protected routes verify token</text>
+
+  <path d="M250 415 C300 500, 395 515, 460 515" class="dash"/>
+  <path d="M740 515 C805 515, 900 500, 950 415" class="dash"/>
+  <text x="600" y="605" text-anchor="middle" class="label">Socket.IO Real-Time Communication</text>
+  <path d="M300 585 C455 640, 745 640, 900 585" class="dash"/>
+  <text x="600" y="632" text-anchor="middle" class="small">Project, task, milestone, team, comment, and activity updates are emitted to connected clients</text>
+</svg>
